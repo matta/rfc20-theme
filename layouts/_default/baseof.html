@@ -1,16 +1,75 @@
-{{ "<!-- BEGIN layouts/_default/baseof.html -->" | safeHTML }}
 <!DOCTYPE html>
-<html lang="en" charset="utf-8">
-  {{ partial "head.html" . }}
-  <body>
-    {{ partial "nav.html" . }}
-    <div class="container">
-      <main id="main">
-        {{ block "main" . }}
+{{- "\n<!-- BEGIN layouts/_default/baseof.html -->\n" | safeHTML -}}
+{{- printf "<!-- .Kind: %s -->\n" .Kind | safeHTML -}}
+{{- printf "<!-- .Type: %s -->\n" .Type | safeHTML -}}
+{{- printf "<!-- .Layout: %s -->\n" .Layout | safeHTML -}}
+{{- $bundle_type := "n/a" -}}
+{{- with .File -}}
+{{- if (eq .Path "") -}}
+{{- $bundle_type = `n/a (regular "list" page)` -}}
+{{- else -}}
+{{- if (eq .BaseFileName "_index") -}}
+{{- $bundle_type = `branch (found "_index")` -}}
+{{- else if (eq .BaseFileName "index") -}}
+{{- $bundle_type = `leaf (found "index")` -}}
+{{- else -}}
+{{- $bundle_type = "n/a (regular page)" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- printf "<!-- Bundle: %s -->\n" $bundle_type | safeHTML -}}
+<html>
+    <head>
+        <meta charset="utf-8">
+        {{ `<!-- BEGIN block "title" (within the <title> tag, with sane defaults) -->` | safeHTML }}
+        <title>
+            {{- block "title" . -}}
+            {{- if (eq .Kind "home") -}}
+            {{- .Site.Title -}}
+            {{- else if (eq .Kind "taxonomy") -}}
+            {{- printf "%s ‘%s’ ❚ %s" (.Data.Singular | title) .Data.Term .Site.Title -}}
+            {{- else -}}
+            {{- printf "%s ❚ %s" .Title .Site.Title -}}
+            {{- end -}}
+            {{- end -}}
+        </title>
+        {{ `<!-- END block "title" -->` | safeHTML }}
+
+        {{ `<!-- BEGIN block "head" -->` | safeHTML }}
+        {{ block "head" . }}{{end}}
+        {{ `<!-- END block "head" -->` | safeHTML }}
+    </head>
+    <body>
+        {{ with .Site.Taxonomies }}
+        <div style="float: right;">
+            [
+            {{ $is_first_key := true }}
+            {{ range $key,$val := . }}
+            {{ with site.GetPage "taxonomy" $key }}
+            {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
+            {{ $is_first_key = false }}
+            {{ end }}
+            {{ end }}
+            {{ with site.GetPage "page" "search" }}
+            {{ printf `%s <a href="%s"><strong>%s</strong></a>` "|" .Permalink (.Title | lower) | safeHTML }}
+            {{ end }}
+            ]
+        </div>
+        <div style="clear: both;"></div> <!-- Clear floats -->
         {{ end }}
-      </main>
-    </div>
-    {{ partial "script.html" . }}
-  </body>
+
+        <div class="masthead-title"><a href="/">{{ .Site.Title }}</a></div>
+
+        {{ `<!-- BEGIN block "top" -->` | safeHTML }}
+        {{ block "top" . }}{{ end }}
+        {{ `<!-- END block "top" -->` | safeHTML }}
+
+        {{ `<!-- BEGIN block "main" -->` | safeHTML }}
+        {{ block "main" . }}{{ end }}
+        {{ `<!-- END block "main" -->` | safeHTML }}
+
+        {{ `<!-- BEGIN block "footer" -->` | safeHTML }}
+        {{ block "footer" . }}{{ end }}
+        {{ `<!-- END block "footer" -->` | safeHTML }}
+    </body>
 </html>
-{{ "<!-- END layouts/_default/baseof.html -->" | safeHTML }}

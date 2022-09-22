@@ -1,2 +1,6 @@
+{{ define "main" }}
 {{ "<!-- BEGIN layouts/_default/single.html -->" | safeHTML }}
+<h1>{{ .Title }}</h1>
+{{ .Content }}
 {{ "<!-- END layouts/_default/single.html -->" | safeHTML }}
+{{ end }}
