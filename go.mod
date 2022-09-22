@@ -1,3 +1,3 @@
-module github.com/matta/hugo-rfc20-theme
+module github.com/matta/rfc20-theme
 
 go 1.18
