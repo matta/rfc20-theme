@@ -21,6 +21,28 @@
 <html>
     <head>
         <meta charset="utf-8">
+
+        <!--
+             Instruct browsers to size the viewport width to the device
+             width, with intelligent resolution scaling.
+
+             Browsers can choose to render sites in a resolution larger than
+             the screen resolution in order to make them more usable.  Browsers
+             then provide UI features that let users easily zoom in and out,
+             etc.  This is useful for sites designed without regard for mobile
+             or other small screen devices.
+
+             Setting the viewport to the device width tells the browser this
+             site is designed to work with narrow width screens.  Setting
+             initial-scale=1 turns on a heuristic where the browser scales
+             things according to the screen's pixel density.
+
+             https://developer.mozilla.org/en-US/docs/Web/HTML/Viewport_meta_tag
+        -->
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+        <link rel="stylesheet" href="/css/rfc20.css">
+
         {{ `<!-- BEGIN block "title" (within the <title> tag, with sane defaults) -->` | safeHTML }}
         <title>
             {{- block "title" . -}}
@@ -40,25 +62,23 @@
         {{ `<!-- END block "head" -->` | safeHTML }}
     </head>
     <body>
-        {{ with .Site.Taxonomies }}
-        <div style="float: right;">
-            [
-            {{ $is_first_key := true }}
-            {{ range $key,$val := . }}
-            {{ with site.GetPage "taxonomy" $key }}
-            {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
-            {{ $is_first_key = false }}
-            {{ end }}
-            {{ end }}
-            {{ with site.GetPage "page" "search" }}
-            {{ printf `%s <a href="%s"><strong>%s</strong></a>` "|" .Permalink (.Title | lower) | safeHTML }}
-            {{ end }}
-            ]
-        </div>
-        <div style="clear: both;"></div> <!-- Clear floats -->
-        {{ end }}
-
-        <div class="masthead-title"><a href="/">{{ .Site.Title }}</a></div>
+        <nav>
+            <a href="/">{{ .Site.Title }}</a>
+            <div>
+                [
+                {{ with .Site.Taxonomies }}
+                {{ $is_first_key := true }}
+                {{ range $key,$val := . }}
+                {{ with site.GetPage "taxonomy" $key }}
+                {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
+                {{ $is_first_key = false }}
+                {{ end }}
+                {{ end }}
+                {{ end }}
+                ]
+            </div>
+        </nav>
+        <hr>
 
         {{ `<!-- BEGIN block "top" -->` | safeHTML }}
         {{ block "top" . }}{{ end }}

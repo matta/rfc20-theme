@@ -1,0 +1,13 @@
+/* The first child of <body> is the site's nav bar.  Use flex row wrap
+   layout so its children flow left to right.  */
+body > nav:first-child {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+/* The last child of the site's nav bar uses "auto" for margin-left.  This
+   causes any positive horizontal free space to be distributed to the left
+   margin, effectively pushing the last child to the right.  */
+body > nav:first-child > div:last-child {
+    margin-left: auto;
+}
