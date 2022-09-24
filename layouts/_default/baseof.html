@@ -62,21 +62,22 @@
         {{ `<!-- END block "head" -->` | safeHTML }}
     </head>
     <body>
+      <div class="content-wrapper">
         <nav>
-            <a href="/">{{ .Site.Title }}</a>
-            <div>
-                [
-                {{ with .Site.Taxonomies }}
-                {{ $is_first_key := true }}
-                {{ range $key,$val := . }}
-                {{ with site.GetPage "taxonomy" $key }}
-                {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
-                {{ $is_first_key = false }}
-                {{ end }}
-                {{ end }}
-                {{ end }}
-                ]
-            </div>
+          <a href="/">{{ .Site.Title }}</a>
+          <div>
+            [
+            {{ with .Site.Taxonomies }}
+            {{ $is_first_key := true }}
+            {{ range $key,$val := . }}
+            {{ with site.GetPage "taxonomy" $key }}
+            {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
+            {{ $is_first_key = false }}
+            {{ end }}
+            {{ end }}
+            {{ end }}
+            ]
+          </div>
         </nav>
         <hr>
 
@@ -91,5 +92,6 @@
         {{ `<!-- BEGIN block "footer" -->` | safeHTML }}
         {{ block "footer" . }}{{ end }}
         {{ `<!-- END block "footer" -->` | safeHTML }}
+      </div>
     </body>
 </html>

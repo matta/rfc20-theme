@@ -1,6 +1,8 @@
 {{ define "main" }}
 {{ "<!-- BEGIN layouts/_default/single.html -->" | safeHTML }}
+<article>
 <h1>{{ .Title }}</h1>
 {{ .Content }}
+</article>
 {{ "<!-- END layouts/_default/single.html -->" | safeHTML }}
 {{ end }}
