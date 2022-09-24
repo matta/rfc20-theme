@@ -63,23 +63,26 @@
     </head>
     <body>
       <div class="content-wrapper">
-        <nav>
-          <a href="/">{{ .Site.Title }}</a>
-          <div>
-            [
-            {{ with .Site.Taxonomies }}
-            {{ $is_first_key := true }}
-            {{ range $key,$val := . }}
-            {{ with site.GetPage "taxonomy" $key }}
-            {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
-            {{ $is_first_key = false }}
-            {{ end }}
-            {{ end }}
-            {{ end }}
-            ]
-          </div>
-        </nav>
-        <hr>
+        <header>
+          <h1>R Eff See Twenty!!!!</h1>
+          <nav>
+            <a href="/">{{ .Site.Title }}</a>
+            <div>
+              [
+              {{ with .Site.Taxonomies }}
+              {{ $is_first_key := true }}
+              {{ range $key,$val := . }}
+              {{ with site.GetPage "taxonomy" $key }}
+              {{ printf `%s <a href="%s">%s</a>` (cond $is_first_key "" "|") .Permalink .Type | safeHTML }}
+              {{ $is_first_key = false }}
+              {{ end }}
+              {{ end }}
+              {{ end }}
+              ]
+            </div>
+          </nav>
+          <hr>
+        </header>
 
         {{ `<!-- BEGIN block "top" -->` | safeHTML }}
         {{ block "top" . }}{{ end }}
