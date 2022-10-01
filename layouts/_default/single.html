@@ -1,8 +1,13 @@
 {{ define "main" }}
 {{ "<!-- BEGIN layouts/_default/single.html -->" | safeHTML }}
-<article>
-<h1>{{ .Title }}</h1>
-{{ .Content }}
-</article>
+<main>
+  <article>
+    <h1>{{ .Title }}</h1>
+    <aside>
+      {{ .TableOfContents }}
+    </aside>
+    {{ .Content }}
+  </article>
+</main>
 {{ "<!-- END layouts/_default/single.html -->" | safeHTML }}
 {{ end }}
